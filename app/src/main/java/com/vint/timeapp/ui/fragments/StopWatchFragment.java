@@ -27,7 +27,7 @@ public class StopWatchFragment extends BaseFragment implements StopWatchView{
     final int MSG_PAUSE_TIMER = 1;
     final int MSG_UPDATE_TIMER = 2;
     final int MSG_RESET_TIMER = 3;
-    final int REFRESH_RATE = 80;
+    final int REFRESH_RATE = 70;
 
     private StopWatchPresenter presenter;
     private Handler mHandler = new Handler()
