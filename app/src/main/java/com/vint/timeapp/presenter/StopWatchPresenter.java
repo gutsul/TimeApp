@@ -45,28 +45,27 @@ public class StopWatchPresenter extends BasePresenter<StopWatchView> {
     }
 
     public String getElapsedTime() {
-        long time = 0L;
+        long duration = 0L;
 
         switch (state){
             case STARTED:
-                time = SystemClock.uptimeMillis() - startTime + saveTime;
+                duration = SystemClock.uptimeMillis() - startTime + saveTime;
                 break;
             case PAUSED:
-                time = pauseTime - startTime;
-                saveTime += time;
-                time  = saveTime;
+                duration = pauseTime - startTime;
+                saveTime += duration;
+                duration = saveTime;
                 break;
 
             case RESETED:
-                time = 0;
+                duration = 0;
                 break;
         }
 
-
-        int seconds = (int) (time / 1000);
+        int seconds = (int) (duration / 1000);
         int minutes = seconds / 60;
         seconds = seconds % 60;
-        int milliseconds = (int) (time % 100);
+        int milliseconds = (int) (duration % 1000) / 10;
 
         String formated = String.format("%d:%02d:%02d", minutes, seconds, milliseconds);
         return formated;
