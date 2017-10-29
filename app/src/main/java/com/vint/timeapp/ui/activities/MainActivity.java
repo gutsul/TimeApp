@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.vint.timeapp.R;
@@ -33,10 +34,17 @@ public class MainActivity extends AppCompatActivity implements MainView, BottomN
 
         presenter = new MainPresenter();
         presenter.bind(this);
-        presenter.navigateTo(presenter.DEFAULT_ITEM);
+        init();
 
         navigation.setOnNavigationItemSelectedListener(this);
 
+    }
+
+    private void init() {
+        int menuId = R.id.navigation_stopwatch;
+        presenter.navigateTo(menuId);
+        View view = navigation.findViewById(menuId);
+        view.performClick();
     }
 
     @Override

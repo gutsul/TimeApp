@@ -9,7 +9,6 @@ import com.vint.timeapp.view.MainView;
  */
 
 public class MainPresenter extends BasePresenter<MainView> {
-    public final int DEFAULT_ITEM = R.id.navigation_stopwatch;
 
     public void navigateTo(int itemId){
         switch (itemId){
