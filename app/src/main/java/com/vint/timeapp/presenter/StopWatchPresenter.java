@@ -13,7 +13,7 @@ import com.vint.timeapp.view.StopWatchView;
 public class StopWatchPresenter extends BasePresenter<StopWatchView> {
 
     private State state = State.RESETED;
-    private long startTime, pauseTime = 0L ;
+    private long startTime, pauseTime, saveTime = 0L;
 
 
     public void trigger(){
@@ -38,6 +38,9 @@ public class StopWatchPresenter extends BasePresenter<StopWatchView> {
 
     public void reset() {
         state = State.RESETED;
+        startTime = 0L;
+        pauseTime = 0L;
+        saveTime = 0L;
         Log.d("StopWatch", "state: " + state.toString());
     }
 
@@ -46,10 +49,12 @@ public class StopWatchPresenter extends BasePresenter<StopWatchView> {
 
         switch (state){
             case STARTED:
-                time = SystemClock.uptimeMillis() - startTime;
+                time = SystemClock.uptimeMillis() - startTime + saveTime;
                 break;
             case PAUSED:
                 time = pauseTime - startTime;
+                saveTime += time;
+                time  = saveTime;
                 break;
 
             case RESETED:

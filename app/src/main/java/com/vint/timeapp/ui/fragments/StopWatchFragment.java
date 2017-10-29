@@ -44,7 +44,7 @@ public class StopWatchFragment extends BaseFragment implements StopWatchView{
                     mHandler.sendEmptyMessageDelayed(MSG_UPDATE_TIMER,REFRESH_RATE); //text view is updated every second,
                     break;                                  //though the timer is still running
                 case MSG_PAUSE_TIMER:
-//                    mHandler.removeMessages(MSG_UPDATE_TIMER);
+                    mHandler.removeMessages(MSG_UPDATE_TIMER);
                     stopwatch.setText(presenter.getElapsedTime());
                     break;
                 case MSG_RESET_TIMER:
