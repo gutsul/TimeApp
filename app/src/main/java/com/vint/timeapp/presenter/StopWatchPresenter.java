@@ -61,9 +61,9 @@ public class StopWatchPresenter extends BasePresenter<StopWatchView> {
         int seconds = (int) (time / 1000);
         int minutes = seconds / 60;
         seconds = seconds % 60;
-        int milliseconds = (int) (time % 1000);
+        int milliseconds = (int) (time % 100);
 
-        String formated = String.format("%d:%02d:%03d", minutes, seconds, milliseconds);
+        String formated = String.format("%d:%02d:%02d", minutes, seconds, milliseconds);
         return formated;
     }
 

@@ -24,8 +24,9 @@ public class StopWatchFragment extends BaseFragment implements StopWatchView{
     TextView stopwatch;
 
     final int MSG_START_TIMER = 0;
-    final int MSG_STOP_TIMER = 1;
+    final int MSG_PAUSE_TIMER = 1;
     final int MSG_UPDATE_TIMER = 2;
+    final int MSG_RESET_TIMER = 3;
     final int REFRESH_RATE = 100;
 
     private StopWatchPresenter presenter;
@@ -38,12 +39,15 @@ public class StopWatchFragment extends BaseFragment implements StopWatchView{
                 case MSG_START_TIMER:
                     mHandler.sendEmptyMessage(MSG_UPDATE_TIMER);
                     break;
-
                 case MSG_UPDATE_TIMER:
                     stopwatch.setText(presenter.getElapsedTime());
                     mHandler.sendEmptyMessageDelayed(MSG_UPDATE_TIMER,REFRESH_RATE); //text view is updated every second,
                     break;                                  //though the timer is still running
-                case MSG_STOP_TIMER:
+                case MSG_PAUSE_TIMER:
+//                    mHandler.removeMessages(MSG_UPDATE_TIMER);
+                    stopwatch.setText(presenter.getElapsedTime());
+                    break;
+                case MSG_RESET_TIMER:
                     mHandler.removeMessages(MSG_UPDATE_TIMER);
                     stopwatch.setText(presenter.getElapsedTime());
                     break;
@@ -93,13 +97,15 @@ public class StopWatchFragment extends BaseFragment implements StopWatchView{
     public void pause() {
         startOrPause.setImageResource(R.drawable.ic_play_24dp);
         presenter.pause();
-        mHandler.sendEmptyMessage(MSG_STOP_TIMER);
+        mHandler.sendEmptyMessage(MSG_PAUSE_TIMER);
     }
 
+    @OnClick(R.id.reset)
     @Override
     public void reset() {
         startOrPause.setImageResource(R.drawable.ic_play_24dp);
         presenter.reset();
+        mHandler.sendEmptyMessage(MSG_RESET_TIMER);
     }
 
     @OnClick(R.id.startOrPause)
