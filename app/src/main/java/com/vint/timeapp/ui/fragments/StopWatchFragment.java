@@ -1,10 +1,13 @@
 package com.vint.timeapp.ui.fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
+import android.widget.TextView;
 
 import com.vint.timeapp.R;
 import com.vint.timeapp.presenter.StopWatchPresenter;
@@ -17,7 +20,39 @@ public class StopWatchFragment extends BaseFragment implements StopWatchView{
     @BindView(R.id.startOrPause)
     FloatingActionButton startOrPause;
 
+    @BindView(R.id.stopwatch)
+    TextView stopwatch;
+
+    final int MSG_START_TIMER = 0;
+    final int MSG_STOP_TIMER = 1;
+    final int MSG_UPDATE_TIMER = 2;
+    final int REFRESH_RATE = 100;
+
     private StopWatchPresenter presenter;
+    private Handler mHandler = new Handler()
+    {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case MSG_START_TIMER:
+                    mHandler.sendEmptyMessage(MSG_UPDATE_TIMER);
+                    break;
+
+                case MSG_UPDATE_TIMER:
+                    stopwatch.setText(presenter.getElapsedTime());
+                    mHandler.sendEmptyMessageDelayed(MSG_UPDATE_TIMER,REFRESH_RATE); //text view is updated every second,
+                    break;                                  //though the timer is still running
+                case MSG_STOP_TIMER:
+                    mHandler.removeMessages(MSG_UPDATE_TIMER);
+                    stopwatch.setText(presenter.getElapsedTime());
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    };
 
     public StopWatchFragment() {
         this.presenter = new StopWatchPresenter();
@@ -40,6 +75,7 @@ public class StopWatchFragment extends BaseFragment implements StopWatchView{
 
     }
 
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -49,21 +85,21 @@ public class StopWatchFragment extends BaseFragment implements StopWatchView{
     @Override
     public void start() {
         startOrPause.setImageResource(R.drawable.ic_pause_24dp);
+        presenter.start();
+        mHandler.sendEmptyMessage(MSG_START_TIMER);
     }
 
     @Override
     public void pause() {
         startOrPause.setImageResource(R.drawable.ic_play_24dp);
+        presenter.pause();
+        mHandler.sendEmptyMessage(MSG_STOP_TIMER);
     }
 
     @Override
     public void reset() {
-
-    }
-
-    @Override
-    public void update(long timeInMillis) {
-
+        startOrPause.setImageResource(R.drawable.ic_play_24dp);
+        presenter.reset();
     }
 
     @OnClick(R.id.startOrPause)

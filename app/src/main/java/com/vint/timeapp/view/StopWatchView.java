@@ -12,6 +12,4 @@ public interface StopWatchView extends BaseView {
 
     void reset();
 
-    void update(long timeInMillis);
-
 }
