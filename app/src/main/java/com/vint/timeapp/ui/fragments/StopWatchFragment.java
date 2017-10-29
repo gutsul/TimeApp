@@ -79,10 +79,10 @@ public class StopWatchFragment extends BaseFragment implements StopWatchView{
 
     }
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mHandler.removeMessages(MSG_UPDATE_TIMER);
         presenter.unbind();
     }
 
