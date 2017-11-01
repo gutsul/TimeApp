@@ -7,7 +7,7 @@ import io.realm.annotations.PrimaryKey;
  * Created by gutsul on 01.11.17.
  */
 
-public class Alarm extends RealmObject {
+public class AlarmClock extends RealmObject {
     @PrimaryKey
     private String id;
     private long time;
