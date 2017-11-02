@@ -14,10 +14,10 @@ import io.realm.Realm;
 public class AlarmClockPresenter extends BasePresenter<AlarmClockView> {
 
     private Realm realm = Realm.getDefaultInstance();
-
+    private List<AlarmClock> alarmClocks;
 
     public void initList(){
-        List<AlarmClock> alarmClocks = realm.where(AlarmClock.class).findAll();
+        alarmClocks = realm.where(AlarmClock.class).findAll();
 
         if (alarmClocks.isEmpty()){
             getView().showEmptyResult();

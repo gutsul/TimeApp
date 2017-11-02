@@ -1,13 +1,17 @@
 package com.vint.timeapp.ui.fragments;
 
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TimePicker;
 
 import com.vint.timeapp.R;
 import com.vint.timeapp.models.AlarmClock;
@@ -18,8 +22,9 @@ import com.vint.timeapp.view.AlarmClockView;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
-public class AlarmClockFragment extends BaseFragment implements AlarmClockView{
+public class AlarmClockFragment extends BaseFragment implements AlarmClockView, TimePickerDialog.OnTimeSetListener {
 
     @BindView(R.id.list)
     RecyclerView list;
@@ -78,5 +83,21 @@ public class AlarmClockFragment extends BaseFragment implements AlarmClockView{
     @Override
     public void showEmptyResult() {
         empty.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.add_alarm)
+    void addAlarmClock(){
+        showTimePicker();
+    }
+
+
+    private void showTimePicker(){
+        DialogFragment timePicker = TimePickerFragment.newInstance(this);
+        timePicker.show(getFragmentManager(), "timePicker");
+    }
+
+    @Override
+    public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
+        Log.d("AlarmClock", "TimePicker value " + hourOfDay + ":" + minute);
     }
 }
