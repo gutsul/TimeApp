@@ -68,8 +68,6 @@ public class AlarmClockFragment extends BaseFragment implements AlarmClockView, 
 
     @Override
     public void initList(List<AlarmClock> alarmClocks) {
-        Log.d("AlarmClock", "Init list");
-
         adapter = new AlarmClockAdapter(alarmClocks);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
@@ -88,11 +86,10 @@ public class AlarmClockFragment extends BaseFragment implements AlarmClockView, 
         empty.setVisibility(View.GONE);
     }
 
+    @Override
     @OnClick(R.id.add_alarm)
-    void addAlarmClock(){
+    public void addAlarmClock(){
         showTimePicker();
-        Log.d("AlarmClock", "Add alarm clock");
-
     }
 
     private void showTimePicker(){
@@ -112,13 +109,7 @@ public class AlarmClockFragment extends BaseFragment implements AlarmClockView, 
             e.printStackTrace();
         }
 
-        String message = getString(R.string.default_alarm_message);
-        Log.d("AlarmClock", "time long: " + time);
-
-        presenter.addAlarmClock(time, message, true);
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
-            Log.d("AlarmClock", "Data changed");
-        }
+        presenter.addAlarmClock(time, null, true);
+        adapter.notifyDataSetChanged();
     }
 }
