@@ -19,10 +19,13 @@ import com.vint.timeapp.presenter.AlarmClockPresenter;
 import com.vint.timeapp.ui.adapters.AlarmClockAdapter;
 import com.vint.timeapp.view.AlarmClockView;
 
+import java.text.ParseException;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static com.vint.timeapp.utils.TimeUtils.timeInMilliseconds;
 
 public class AlarmClockFragment extends BaseFragment implements AlarmClockView, TimePickerDialog.OnTimeSetListener {
 
@@ -34,6 +37,7 @@ public class AlarmClockFragment extends BaseFragment implements AlarmClockView, 
 
     private AlarmClockAdapter adapter;
     private AlarmClockPresenter presenter;
+    private long time;
 
     public AlarmClockFragment() {
         this.presenter = new AlarmClockPresenter();
@@ -64,13 +68,7 @@ public class AlarmClockFragment extends BaseFragment implements AlarmClockView, 
 
     @Override
     public void initList(List<AlarmClock> alarmClocks) {
-//        adapter.setCallback(new TransportListAdapter.Callback() {
-//            @Override
-//            public void onFavoriteClick(Transport transport) {
-//                String message = String.format("Click on %s #%s", transport.getType(), transport.getNumber());
-//                Log.d("TransportListFragment", message);
-//            }
-//        });
+        Log.d("AlarmClock", "Init list");
 
         adapter = new AlarmClockAdapter(alarmClocks);
 
@@ -85,11 +83,17 @@ public class AlarmClockFragment extends BaseFragment implements AlarmClockView, 
         empty.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void hideEmptyResult() {
+        empty.setVisibility(View.GONE);
+    }
+
     @OnClick(R.id.add_alarm)
     void addAlarmClock(){
         showTimePicker();
-    }
+        Log.d("AlarmClock", "Add alarm clock");
 
+    }
 
     private void showTimePicker(){
         DialogFragment timePicker = TimePickerFragment.newInstance(this);
@@ -98,6 +102,23 @@ public class AlarmClockFragment extends BaseFragment implements AlarmClockView, 
 
     @Override
     public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
-        Log.d("AlarmClock", "TimePicker value " + hourOfDay + ":" + minute);
+        String timeIn24format = String.format("%02d:%02d", hourOfDay, minute);
+        Log.d("AlarmClock", "TimePicker value " + timeIn24format);
+
+        long time = 0;
+        try {
+            time = timeInMilliseconds(timeIn24format);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        String message = getString(R.string.default_alarm_message);
+        Log.d("AlarmClock", "time long: " + time);
+
+        presenter.addAlarmClock(time, message, true);
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+            Log.d("AlarmClock", "Data changed");
+        }
     }
 }

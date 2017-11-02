@@ -1,6 +1,7 @@
 package com.vint.timeapp.ui.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.TimeUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +11,14 @@ import android.widget.TextView;
 import com.vint.timeapp.R;
 import com.vint.timeapp.models.AlarmClock;
 
+import java.sql.Time;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.vint.timeapp.utils.TimeUtils.timeIn24HourFormat;
 
 /**
  * Created by ygrigortsevich on 06.07.16.
@@ -39,7 +44,7 @@ public class AlarmClockAdapter extends RecyclerView.Adapter<AlarmClockAdapter.Vi
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final AlarmClock alarmClock = alarmClocks.get(position);
 
-        String time = String.valueOf(alarmClock.getTime());
+        long time = alarmClock.getTime();
         String message = alarmClock.getMessage();
         boolean isEnabled = alarmClock.isEnable();
 
@@ -73,8 +78,9 @@ public class AlarmClockAdapter extends RecyclerView.Adapter<AlarmClockAdapter.Vi
             ButterKnife.bind(this, view);
         }
 
-        public void setAlarmTime(String time){
-            alarmTime.setText(time);
+        public void setAlarmTime(long millis){
+            String timeIn24HourFormat = timeIn24HourFormat(millis);
+            alarmTime.setText(timeIn24HourFormat);
         }
 
         public void setAlarmMessage(String message){
