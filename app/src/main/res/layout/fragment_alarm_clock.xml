@@ -42,6 +42,7 @@
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="16dp"
         android:tint="@color/icons"
+        app:layout_behavior="com.vint.timeapp.ui.bahaviors.FabHideOnScroll"
         app:srcCompat="@drawable/ic_plus_24dp" />
 
 </android.support.design.widget.CoordinatorLayout>
