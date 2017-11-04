@@ -2,7 +2,6 @@ package com.vint.timeapp.ui.adapters;
 
 import android.annotation.SuppressLint;
 import android.support.v7.widget.RecyclerView;
-import android.util.TimeUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +11,7 @@ import android.widget.TextView;
 import com.vint.timeapp.R;
 import com.vint.timeapp.models.AlarmClock;
 
-import java.sql.Time;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +26,16 @@ import static com.vint.timeapp.utils.TimeUtils.timeIn24HourFormat;
 public class AlarmClockAdapter extends RecyclerView.Adapter<AlarmClockAdapter.ViewHolder>{
 
     private List<AlarmClock> alarmClocks;
+    private Callback callback;
+
+
+    public interface Callback {
+        void onChangeState(AlarmClock alarm);
+    }
+
+    public void setCallback(Callback callback) {
+        this.callback = callback;
+    }
 
     public AlarmClockAdapter(List<AlarmClock> alarmClocks) {
         this.alarmClocks = alarmClocks;
@@ -42,23 +49,25 @@ public class AlarmClockAdapter extends RecyclerView.Adapter<AlarmClockAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         final AlarmClock alarmClock = alarmClocks.get(position);
 
         long time = alarmClock.getTime();
         String message = alarmClock.getMessage();
-        boolean isEnabled = alarmClock.isEnable();
+        final boolean isEnabled = alarmClock.isEnable();
 
         holder.setAlarmTime(time);
         holder.setAlarmMessage(message);
         holder.enableAlarm(isEnabled);
 
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
+        holder.alarmSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (callback != null) {
+                    callback.onChangeState(alarmClock);
+                }
+            }
+        });
     }
 
     @Override

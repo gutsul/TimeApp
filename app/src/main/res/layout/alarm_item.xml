@@ -12,6 +12,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:textSize="56sp"
+        android:textColor="@color/textPrimary"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="08:00" />'
 

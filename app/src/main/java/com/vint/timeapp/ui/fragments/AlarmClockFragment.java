@@ -69,6 +69,16 @@ public class AlarmClockFragment extends BaseFragment implements AlarmClockView, 
     @Override
     public void initList(List<AlarmClock> alarmClocks) {
         adapter = new AlarmClockAdapter(alarmClocks);
+        adapter.setCallback(new AlarmClockAdapter.Callback() {
+            @Override
+            public void onChangeState(AlarmClock alarm) {
+                if(alarm.isEnable()){
+                    presenter.disableAlarm(alarm);
+                } else {
+                    presenter.enableAlarm(alarm);
+                }
+            }
+        });
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         list.setLayoutManager(mLayoutManager);

@@ -41,6 +41,18 @@ public class AlarmClockPresenter extends BasePresenter<AlarmClockView> {
         getView().hideEmptyResult();
     }
 
+    public void enableAlarm(AlarmClock alarm){
+        realm.beginTransaction();
+        alarm.setEnable(true);
+        realm.commitTransaction();
+    }
+
+    public void disableAlarm(AlarmClock alarm){
+        realm.beginTransaction();
+        alarm.setEnable(false);
+        realm.commitTransaction();
+    }
+
 
     @Override
     public void unbind() {
