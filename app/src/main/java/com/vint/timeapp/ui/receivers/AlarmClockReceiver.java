@@ -18,10 +18,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.vint.timeapp.R;
 import com.vint.timeapp.utils.TimeUtils;
@@ -40,6 +40,8 @@ public class AlarmClockReceiver extends BroadcastReceiver {
         String title = context.getString(R.string.title_alarm_clock);
         String content = String.format("%s %s", TimeUtils.timeIn24HourFormat(time), message);
 
+        Log.d("AlarmReceiver", "Alarm RUN: " + time + " | current: " + System.currentTimeMillis());
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setAutoCancel(true).
                 setDefaults(Notification.DEFAULT_ALL).
@@ -52,8 +54,9 @@ public class AlarmClockReceiver extends BroadcastReceiver {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(1,builder.build());
 
+
         Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        vibrator.vibrate(3000);
+        vibrator.vibrate(500);
 
     }
 
@@ -65,10 +68,11 @@ public class AlarmClockReceiver extends BroadcastReceiver {
         intent.putExtra(REPEAT, repeat);
         intent.putExtra(MESSAGE, message);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+        Log.d("AlarmReceiver", "Alarm set at: " + time + " | current: " + System.currentTimeMillis());
 
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
         if(repeat){
-            manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, time, AlarmManager.INTERVAL_DAY, pendingIntent);
+            manager.setRepeating(AlarmManager.RTC_WAKEUP, time, AlarmManager.INTERVAL_DAY, pendingIntent);
         } else {
             manager.set(AlarmManager.RTC_WAKEUP, time, pendingIntent);
         }
