@@ -17,6 +17,7 @@ import com.vint.timeapp.R;
 import com.vint.timeapp.models.AlarmClock;
 import com.vint.timeapp.presenter.AlarmClockPresenter;
 import com.vint.timeapp.ui.adapters.AlarmClockAdapter;
+import com.vint.timeapp.ui.receivers.AlarmClockReceiver;
 import com.vint.timeapp.view.AlarmClockView;
 
 import java.text.ParseException;
@@ -25,7 +26,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static com.vint.timeapp.utils.TimeUtils.timeInMilliseconds;
+import static com.vint.timeapp.utils.TimeUtils.timeInMillis;
 
 public class AlarmClockFragment extends BaseFragment implements AlarmClockView, TimePickerDialog.OnTimeSetListener {
 
@@ -37,10 +38,12 @@ public class AlarmClockFragment extends BaseFragment implements AlarmClockView, 
 
     private AlarmClockAdapter adapter;
     private AlarmClockPresenter presenter;
-    private long time;
+
+    private AlarmClockReceiver alarmReceiver;
 
     public AlarmClockFragment() {
         this.presenter = new AlarmClockPresenter();
+        alarmReceiver = new AlarmClockReceiver();
     }
 
     @Override
@@ -104,7 +107,7 @@ public class AlarmClockFragment extends BaseFragment implements AlarmClockView, 
 
     @Override
     public void enableAlarm(AlarmClock alarm) {
-
+        alarmReceiver.setAlarm(getContext(), alarm.getTime(), true, alarm.getMessage());
     }
 
     @Override
@@ -129,10 +132,12 @@ public class AlarmClockFragment extends BaseFragment implements AlarmClockView, 
 
         long time = 0;
         try {
-            time = timeInMilliseconds(timeIn24format);
+            time = timeInMillis(hourOfDay, minute);
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        Log.d("AlarmClock", "TimePicker long value " + time);
 
         presenter.addAlarmClock(time, null, true);
         adapter.notifyDataSetChanged();

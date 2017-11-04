@@ -1,8 +1,7 @@
 package com.vint.timeapp.utils;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Calendar;
 
 /**
  * Created by gutsul on 03.11.17.
@@ -10,18 +9,24 @@ import java.util.Date;
 
 public class TimeUtils {
 
-    public static final String TIME_24_FORMAT = "HH:mm";
+    public static long timeInMillis(int hour, int minutes) throws ParseException {
+        Calendar calendar = Calendar.getInstance();
 
-    public static long timeInMilliseconds(String time) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat(TIME_24_FORMAT);
-        Date mDate = sdf.parse(time);
-        long timeInMilliseconds = mDate.getTime();
-        return timeInMilliseconds;
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minutes);
+
+        return calendar.getTimeInMillis();
     }
 
-    public static String timeIn24HourFormat(long timeInMilliseconds){
-        SimpleDateFormat sdf = new SimpleDateFormat(TIME_24_FORMAT);
-        String timeIn24HourFormat = sdf.format(new Date(timeInMilliseconds));
+    public static String timeIn24HourFormat(long timeInMillis){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timeInMillis);
+
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minutes = calendar.get(Calendar.MINUTE);
+
+        String timeIn24HourFormat = String.format("%02d:%02d", hour, minutes);
         return timeIn24HourFormat;
     }
 
