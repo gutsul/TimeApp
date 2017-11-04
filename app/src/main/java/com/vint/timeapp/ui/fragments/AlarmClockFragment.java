@@ -88,8 +88,23 @@ public class AlarmClockFragment extends BaseFragment implements AlarmClockView, 
 
     @Override
     @OnClick(R.id.add_alarm)
-    public void addAlarmClock(){
+    public void addAlarm(){
         showTimePicker();
+    }
+
+    @Override
+    public void enableAlarm(AlarmClock alarm) {
+
+    }
+
+    @Override
+    public void dilableAlarm(AlarmClock alarm) {
+
+    }
+
+    @Override
+    public void removeAlarm(AlarmClock alarm) {
+
     }
 
     private void showTimePicker(){

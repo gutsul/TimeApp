@@ -18,7 +18,7 @@ public class AlarmClockPresenter extends BasePresenter<AlarmClockView> {
     private List<AlarmClock> alarmClocks;
 
     public void initList(){
-        alarmClocks = realm.where(AlarmClock.class).findAll();
+        alarmClocks = realm.where(AlarmClock.class).findAll().sort("time");
 
         getView().initList(alarmClocks);
 

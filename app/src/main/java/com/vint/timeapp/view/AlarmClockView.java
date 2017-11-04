@@ -16,7 +16,13 @@ public interface AlarmClockView extends BaseView {
 
     void hideEmptyResult();
 
-    void addAlarmClock();
+    void addAlarm();
+
+    void enableAlarm(AlarmClock alarm);
+
+    void dilableAlarm(AlarmClock alarm);
+
+    void removeAlarm(AlarmClock alarm);
 
 
 }

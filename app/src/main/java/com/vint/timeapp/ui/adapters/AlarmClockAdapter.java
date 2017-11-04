@@ -1,5 +1,6 @@
 package com.vint.timeapp.ui.adapters;
 
+import android.annotation.SuppressLint;
 import android.support.v7.widget.RecyclerView;
 import android.util.TimeUtils;
 import android.view.LayoutInflater;
@@ -83,7 +84,12 @@ public class AlarmClockAdapter extends RecyclerView.Adapter<AlarmClockAdapter.Vi
             alarmTime.setText(timeIn24HourFormat);
         }
 
+        @SuppressLint("ResourceAsColor")
         public void setAlarmMessage(String message){
+            if (message == null){
+                message = alarmMessage.getResources().getString(R.string.default_alarm_message);
+                alarmMessage.setTextColor(R.color.textSecondary);
+            }
             alarmMessage.setText(message);
         }
 
