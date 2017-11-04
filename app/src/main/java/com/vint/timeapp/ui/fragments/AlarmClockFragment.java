@@ -107,7 +107,7 @@ public class AlarmClockFragment extends BaseFragment implements AlarmClockView, 
 
     @Override
     public void enableAlarm(AlarmClock alarm) {
-        alarmReceiver.setAlarm(getContext(), alarm.getTime(), true, alarm.getMessage());
+        alarmReceiver.setAlarm(getContext(), alarm);
     }
 
     @Override

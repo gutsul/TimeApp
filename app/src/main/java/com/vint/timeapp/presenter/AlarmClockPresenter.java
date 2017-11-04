@@ -33,6 +33,7 @@ public class AlarmClockPresenter extends BasePresenter<AlarmClockView> {
         alarmClock.setTime(time);
         alarmClock.setMessage(message);
         alarmClock.setEnable(isEnable);
+        alarmClock.setRepeat(true);
 
         realm.beginTransaction();
         realm.copyToRealm(alarmClock);

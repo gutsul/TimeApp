@@ -24,6 +24,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.vint.timeapp.R;
+import com.vint.timeapp.models.AlarmClock;
 import com.vint.timeapp.utils.TimeUtils;
 
 public class AlarmClockReceiver extends BroadcastReceiver {
@@ -60,21 +61,21 @@ public class AlarmClockReceiver extends BroadcastReceiver {
 
     }
 
-    public void setAlarm(Context context, long time, boolean repeat, String message) {
+    public void setAlarm(Context context, AlarmClock alarm) {
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         Intent intent = new Intent(context, AlarmClockReceiver.class);
-        intent.putExtra(TIME, time);
-        intent.putExtra(REPEAT, repeat);
-        intent.putExtra(MESSAGE, message);
+        intent.putExtra(TIME, alarm.getTime());
+        intent.putExtra(REPEAT, alarm.isRepeat());
+        intent.putExtra(MESSAGE, alarm.getMessage());
 
-        Log.d("AlarmReceiver", "Alarm set at: " + time + " | current: " + System.currentTimeMillis());
+        Log.d("AlarmReceiver", "Alarm set at: " + alarm.getTime() + " | current: " + System.currentTimeMillis());
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
-        if(repeat){
-            manager.setRepeating(AlarmManager.RTC_WAKEUP, time, AlarmManager.INTERVAL_DAY, pendingIntent);
+        if(alarm.isRepeat()){
+            manager.setRepeating(AlarmManager.RTC_WAKEUP, alarm.getTime(), AlarmManager.INTERVAL_DAY, pendingIntent);
         } else {
-            manager.set(AlarmManager.RTC_WAKEUP, time, pendingIntent);
+            manager.set(AlarmManager.RTC_WAKEUP, alarm.getTime(), pendingIntent);
         }
     }
 

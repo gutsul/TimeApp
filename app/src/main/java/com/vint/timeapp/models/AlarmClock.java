@@ -15,6 +15,7 @@ public class AlarmClock extends RealmObject {
     private long time;
     private String message;
     boolean isEnable = true;
+    boolean repeat = true;
 
     public String getId() {
         return id;
@@ -46,5 +47,13 @@ public class AlarmClock extends RealmObject {
 
     public void setEnable(boolean enable) {
         isEnable = enable;
+    }
+
+    public boolean isRepeat() {
+        return repeat;
+    }
+
+    public void setRepeat(boolean repeat) {
+        this.repeat = repeat;
     }
 }
