@@ -10,18 +10,18 @@ import io.realm.annotations.PrimaryKey;
 
 public class AlarmClock extends RealmObject {
     @PrimaryKey
-    private String id;
+    private int id;
     @Index
     private long time;
     private String message;
     boolean isEnable = true;
     boolean repeat = true;
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

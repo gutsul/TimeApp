@@ -4,8 +4,6 @@ import com.vint.timeapp.models.AlarmClock;
 import com.vint.timeapp.view.AlarmClockView;
 
 import java.util.List;
-import java.util.UUID;
-
 import io.realm.Realm;
 
 /**
@@ -27,12 +25,21 @@ public class AlarmClockPresenter extends BasePresenter<AlarmClockView> {
         }
     }
 
-    public void addAlarmClock(long time, String message, boolean isEnable){
+    public void addAlarmClock(long time, String message){
+
+        Number currentId = realm.where(AlarmClock.class).max("id");
+        int nextId;
+        if(currentId == null) {
+            nextId = 1;
+        } else {
+            nextId = currentId.intValue() + 1;
+        }
+
         AlarmClock alarmClock = new AlarmClock();
-        alarmClock.setId(UUID.randomUUID().toString());
+        alarmClock.setId(nextId);
         alarmClock.setTime(time);
         alarmClock.setMessage(message);
-        alarmClock.setEnable(isEnable);
+        alarmClock.setEnable(true);
         alarmClock.setRepeat(true);
 
         realm.beginTransaction();

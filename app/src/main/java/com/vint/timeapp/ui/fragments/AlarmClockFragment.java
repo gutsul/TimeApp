@@ -130,16 +130,12 @@ public class AlarmClockFragment extends BaseFragment implements AlarmClockView, 
         String timeIn24format = String.format("%02d:%02d", hourOfDay, minute);
         Log.d("AlarmClock", "TimePicker value " + timeIn24format);
 
-        long time = 0;
-        try {
-            time = timeInMillis(hourOfDay, minute);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        long time = timeInMillis(hourOfDay, minute);
+
 
         Log.d("AlarmClock", "TimePicker long value " + time);
 
-        presenter.addAlarmClock(time, null, true);
+        presenter.addAlarmClock(time, null);
         adapter.notifyDataSetChanged();
     }
 }

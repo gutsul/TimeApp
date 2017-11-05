@@ -18,6 +18,7 @@
             android:name=".ui.activities.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
+            android:noHistory = "true"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,7 +35,8 @@
 
         <activity
             android:name=".ui.activities.AlarmActivity"
-            android:noHistory = "true">
+            android:noHistory = "true"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

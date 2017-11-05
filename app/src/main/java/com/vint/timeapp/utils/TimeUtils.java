@@ -9,7 +9,7 @@ import java.util.Calendar;
 
 public class TimeUtils {
 
-    public static long timeInMillis(int hour, int minutes) throws ParseException {
+    public static long timeInMillis(int hour, int minutes) {
         Calendar calendar = Calendar.getInstance();
 
         calendar.setTimeInMillis(System.currentTimeMillis());
@@ -17,6 +17,10 @@ public class TimeUtils {
         calendar.set(Calendar.MINUTE, minutes);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
+
+        if (!isFuture(calendar.getTimeInMillis())){
+            calendar.add(Calendar.DATE, 1);
+        }
 
         return calendar.getTimeInMillis();
     }
@@ -32,4 +36,12 @@ public class TimeUtils {
         return timeIn24HourFormat;
     }
 
+    private static boolean isFuture(long timeInMillis){
+        long currentTimeMillis = System.currentTimeMillis();
+        if (currentTimeMillis < timeInMillis){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
