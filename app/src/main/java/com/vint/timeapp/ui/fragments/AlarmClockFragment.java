@@ -112,7 +112,7 @@ public class AlarmClockFragment extends BaseFragment implements AlarmClockView, 
 
     @Override
     public void dilableAlarm(AlarmClock alarm) {
-
+        alarmReceiver.cancelAlarm(getContext(), alarm);
     }
 
     @Override

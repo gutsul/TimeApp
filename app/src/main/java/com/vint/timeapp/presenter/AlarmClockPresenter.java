@@ -1,6 +1,7 @@
 package com.vint.timeapp.presenter;
 
 import com.vint.timeapp.models.AlarmClock;
+import com.vint.timeapp.utils.TimeUtils;
 import com.vint.timeapp.view.AlarmClockView;
 
 import java.util.List;
@@ -51,8 +52,11 @@ public class AlarmClockPresenter extends BasePresenter<AlarmClockView> {
     }
 
     public void enableAlarm(AlarmClock alarm){
+        long nextTime = TimeUtils.getNextTime(alarm.getTime());
+
         realm.beginTransaction();
         alarm.setEnable(true);
+        alarm.setTime(nextTime);
         realm.commitTransaction();
 
         getView().enableAlarm(alarm);
@@ -62,6 +66,8 @@ public class AlarmClockPresenter extends BasePresenter<AlarmClockView> {
         realm.beginTransaction();
         alarm.setEnable(false);
         realm.commitTransaction();
+
+        getView().dilableAlarm(alarm);
     }
 
 

@@ -36,7 +36,7 @@ public class TimeUtils {
         return timeIn24HourFormat;
     }
 
-    private static boolean isFuture(long timeInMillis){
+    public static boolean isFuture(long timeInMillis){
         long currentTimeMillis = System.currentTimeMillis();
         if (currentTimeMillis < timeInMillis){
             return true;
@@ -44,4 +44,19 @@ public class TimeUtils {
             return false;
         }
     }
+
+    public static long getNextTime(long timeInMillis){
+        if(!isFuture(timeInMillis)){
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(timeInMillis);
+
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int minutes = calendar.get(Calendar.MINUTE);
+
+            return timeInMillis(hour, minutes);
+        } else {
+            return timeInMillis;
+        }
+    }
+
 }
