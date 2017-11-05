@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
         android:textColor="@color/textPrimary"
-        android:textSize="56sp"
+        android:textSize="64sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -30,20 +30,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="@string/title_alarm_clock" />
 
-    <Button
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/stop"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="128dp"
-        android:text="stop"
-        android:textSize="16sp"
-        android:textColor="@color/textPrimary"
-        android:textStyle="bold"
-        android:backgroundTint="@color/colorAccent"
-
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:tint="@color/icons"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@drawable/ic_bell_24dp" />
 
 </android.support.constraint.ConstraintLayout>

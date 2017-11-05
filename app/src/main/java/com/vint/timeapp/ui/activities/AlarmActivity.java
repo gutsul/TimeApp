@@ -1,6 +1,7 @@
 package com.vint.timeapp.ui.activities;
 
 import android.content.Intent;
+import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,17 +39,24 @@ public class AlarmActivity extends AppCompatActivity {
         long timeInMillis = intent.getLongExtra(TIME, System.currentTimeMillis());
         String alarmMessage = intent.getStringExtra(MESSAGE);
 
+        if (alarmMessage == null){
+            alarmMessage = getString(R.string.title_alarm_clock);
+        }
+
         time.setText(timeIn24HourFormat(timeInMillis));
         message.setText(alarmMessage);
 
         vibrator = (Vibrator) getSystemService(this.VIBRATOR_SERVICE);
-        vibrator.vibrate(3000);
+
+        long[] pattern = { 200, 2000, 2000, 200, 200, 200 };
+        vibrator.vibrate(pattern, 0);
     }
 
     @OnClick(R.id.stop)
     void stopAlarm(){
         Log.d("AlarmActivity", "Alarm Stoped");
 
+        vibrator.cancel();
         finish();
     }
 }
