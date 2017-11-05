@@ -34,8 +34,16 @@
         android:id="@+id/stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="128dp"
         android:text="stop"
-        />
+        android:textSize="16sp"
+        android:textColor="@color/textPrimary"
+        android:textStyle="bold"
+        android:backgroundTint="@color/colorAccent"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>
