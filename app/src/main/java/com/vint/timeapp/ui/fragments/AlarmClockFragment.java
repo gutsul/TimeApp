@@ -20,7 +20,6 @@ import com.vint.timeapp.ui.adapters.AlarmClockAdapter;
 import com.vint.timeapp.ui.receivers.AlarmClockReceiver;
 import com.vint.timeapp.view.AlarmClockView;
 
-import java.text.ParseException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -128,11 +127,9 @@ public class AlarmClockFragment extends BaseFragment implements AlarmClockView, 
     @Override
     public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
         String timeIn24format = String.format("%02d:%02d", hourOfDay, minute);
-        Log.d("AlarmClock", "TimePicker value " + timeIn24format);
-
         long time = timeInMillis(hourOfDay, minute);
 
-
+        Log.d("AlarmClock", "TimePicker value " + timeIn24format);
         Log.d("AlarmClock", "TimePicker long value " + time);
 
         presenter.addAlarmClock(time, null);
