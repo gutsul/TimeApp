@@ -1,5 +1,7 @@
 package com.vint.timeapp.presenter;
 
+import android.util.Log;
+
 import com.vint.timeapp.models.AlarmClock;
 import com.vint.timeapp.utils.TimeUtils;
 import com.vint.timeapp.view.AlarmClockView;
@@ -68,6 +70,25 @@ public class AlarmClockPresenter extends BasePresenter<AlarmClockView> {
         realm.commitTransaction();
 
         getView().dilableAlarm(alarm);
+    }
+
+    public void removeAlarm(int position){
+
+        realm.beginTransaction();
+
+        AlarmClock alarm = alarmClocks.get(position);
+        getView().dilableAlarm(alarm);
+
+        alarm.deleteFromRealm();
+
+        realm.commitTransaction();
+
+        Log.d("Removed", "Size: "+ alarmClocks.size());
+        getView().removeAlarm(alarm, position);
+
+        if (alarmClocks.isEmpty()){
+            getView().showEmptyResult();
+        }
     }
 
 

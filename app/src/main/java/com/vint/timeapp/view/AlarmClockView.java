@@ -22,7 +22,7 @@ public interface AlarmClockView extends BaseView {
 
     void dilableAlarm(AlarmClock alarm);
 
-    void removeAlarm(AlarmClock alarm);
+    void removeAlarm(AlarmClock alarm, int position);
 
 
 }

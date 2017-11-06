@@ -1,13 +1,17 @@
 package com.vint.timeapp.ui.fragments;
 
 import android.app.TimePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -17,6 +21,7 @@ import com.vint.timeapp.R;
 import com.vint.timeapp.models.AlarmClock;
 import com.vint.timeapp.presenter.AlarmClockPresenter;
 import com.vint.timeapp.ui.adapters.AlarmClockAdapter;
+import com.vint.timeapp.ui.helpers.RecyclerItemTouchHelper;
 import com.vint.timeapp.ui.receivers.AlarmClockReceiver;
 import com.vint.timeapp.view.AlarmClockView;
 
@@ -27,7 +32,7 @@ import butterknife.OnClick;
 
 import static com.vint.timeapp.utils.TimeUtils.timeInMillis;
 
-public class AlarmClockFragment extends BaseFragment implements AlarmClockView, TimePickerDialog.OnTimeSetListener {
+public class AlarmClockFragment extends BaseFragment implements AlarmClockView, TimePickerDialog.OnTimeSetListener, RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
     @BindView(R.id.list)
     RecyclerView list;
@@ -86,6 +91,16 @@ public class AlarmClockFragment extends BaseFragment implements AlarmClockView, 
         list.setLayoutManager(mLayoutManager);
         list.setItemAnimator(new DefaultItemAnimator());
         list.setAdapter(adapter);
+//        list.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
+        // adding item touch helper
+        // only ItemTouchHelper.LEFT added to detect Right to Left swipe
+        // if you want both Right -> Left and Left -> Right
+        // add pass ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT as param
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, (RecyclerItemTouchHelper.RecyclerItemTouchHelperListener) this);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(list);
+
+
     }
 
     @Override
@@ -115,8 +130,8 @@ public class AlarmClockFragment extends BaseFragment implements AlarmClockView, 
     }
 
     @Override
-    public void removeAlarm(AlarmClock alarm) {
-
+    public void removeAlarm(AlarmClock alarm, int position) {
+        adapter.notifyItemRemoved(position);
     }
 
     private void showTimePicker(){
@@ -134,5 +149,45 @@ public class AlarmClockFragment extends BaseFragment implements AlarmClockView, 
 
         presenter.addAlarmClock(time, null);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        if (viewHolder instanceof AlarmClockAdapter.ViewHolder) {
+            // get the removed item name to display it in snack bar
+//            String name = cartList.get(viewHolder.getAdapterPosition()).getName();
+
+            // backup of removed item for undo purpose
+//            final Item deletedItem = cartList.get(viewHolder.getAdapterPosition());
+            final int deletedIndex = viewHolder.getAdapterPosition();
+
+            // remove the item from recycler view
+
+
+            Log.d("AlarmClock", "Swiped index: " + deletedIndex);
+            presenter.removeAlarm(deletedIndex);
+
+
+//            видалив
+//            adapter.removeItem(viewHolder.getAdapterPosition());
+
+
+
+
+            // showing snack bar with Undo option
+//            Snackbar snackbar = Snackbar
+//                    .make(coordinatorLayout, name + " removed from cart!", Snackbar.LENGTH_LONG);
+//            snackbar.setAction("UNDO", new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+
+            // undo is selected, restore the deleted item
+//                    mAdapter.restoreItem(deletedItem, deletedIndex);
+//                }
+//            });
+//            snackbar.setActionTextColor(Color.YELLOW);
+//            snackbar.show();
+
+        }
     }
 }

@@ -1,10 +1,12 @@
 package com.vint.timeapp.ui.adapters;
 
 import android.annotation.SuppressLint;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -70,6 +72,17 @@ public class AlarmClockAdapter extends RecyclerView.Adapter<AlarmClockAdapter.Vi
         });
     }
 
+
+//    public void removeItem(int position) {
+//        alarmClocks.remove(position);
+//
+//    }
+
+    public void restoreItem(AlarmClock item, int position) {
+        alarmClocks.add(position, item);
+        notifyItemInserted(position);
+    }
+
     @Override
     public int getItemCount() {
         return alarmClocks.size();
@@ -82,6 +95,12 @@ public class AlarmClockAdapter extends RecyclerView.Adapter<AlarmClockAdapter.Vi
         TextView alarmMessage;
         @BindView(R.id.alarm_switch)
         Switch alarmSwitch;
+
+        @BindView(R.id.view_background)
+        public RelativeLayout viewBackground;
+
+        @BindView(R.id.view_foreground)
+        public ConstraintLayout viewForeground;
 
         public ViewHolder(View view) {
             super(view);
