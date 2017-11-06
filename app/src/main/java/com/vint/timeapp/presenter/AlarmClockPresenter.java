@@ -91,7 +91,6 @@ public class AlarmClockPresenter extends BasePresenter<AlarmClockView> {
         }
     }
 
-
     @Override
     public void unbind() {
         super.unbind();

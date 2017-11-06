@@ -30,6 +30,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static android.support.v7.widget.DividerItemDecoration.*;
 import static com.vint.timeapp.utils.TimeUtils.timeInMillis;
 
 public class AlarmClockFragment extends BaseFragment implements AlarmClockView, TimePickerDialog.OnTimeSetListener, RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
@@ -91,7 +92,7 @@ public class AlarmClockFragment extends BaseFragment implements AlarmClockView, 
         list.setLayoutManager(mLayoutManager);
         list.setItemAnimator(new DefaultItemAnimator());
         list.setAdapter(adapter);
-//        list.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        list.addItemDecoration(new DividerItemDecoration(getContext(), VERTICAL));
 
         // adding item touch helper
         // only ItemTouchHelper.LEFT added to detect Right to Left swipe
@@ -99,8 +100,6 @@ public class AlarmClockFragment extends BaseFragment implements AlarmClockView, 
         // add pass ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT as param
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, (RecyclerItemTouchHelper.RecyclerItemTouchHelperListener) this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(list);
-
-
     }
 
     @Override
@@ -159,20 +158,12 @@ public class AlarmClockFragment extends BaseFragment implements AlarmClockView, 
 
             // backup of removed item for undo purpose
 //            final Item deletedItem = cartList.get(viewHolder.getAdapterPosition());
-            final int deletedIndex = viewHolder.getAdapterPosition();
 
-            // remove the item from recycler view
+//            final int deletedIndex = viewHolder.getAdapterPosition();
+            Log.d("AlarmClock", "Swiped index: " + position);
+            presenter.removeAlarm(position);
 
-
-            Log.d("AlarmClock", "Swiped index: " + deletedIndex);
-            presenter.removeAlarm(deletedIndex);
-
-
-//            видалив
 //            adapter.removeItem(viewHolder.getAdapterPosition());
-
-
-
 
             // showing snack bar with Undo option
 //            Snackbar snackbar = Snackbar

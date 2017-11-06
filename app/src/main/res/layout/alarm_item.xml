@@ -26,12 +26,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:layout_toLeftOf="@id/delete_icon"
             android:text="@string/delete"
             android:textColor="@android:color/white"
-            android:textSize="13dp"
-            android:layout_marginEnd="10dp" />
+            android:textSize="13dp" />
 
     </RelativeLayout>
 
@@ -39,8 +39,8 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/view_foreground"
         android:layout_width="match_parent"
-        android:background="@android:color/white"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
 
         <TextView
             android:id="@+id/alarm_time"
@@ -48,8 +48,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
-            android:textSize="56sp"
             android:textColor="@color/textPrimary"
+            android:textSize="56sp"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="08:00" />'
 
@@ -57,9 +57,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:orientation="horizontal"
             app:layout_constraintTop_toBottomOf="@id/alarm_time">
 
             <ImageView
@@ -67,18 +67,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:tint="@color/textSecondary"
-                app:srcCompat="@drawable/ic_bell_24dp"
-                />
+                app:srcCompat="@drawable/ic_bell_24dp" />
 
             <TextView
                 android:id="@+id/alarm_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
                 android:textColor="@color/textSecondary"
                 android:textSize="16sp"
-                tools:text="@string/default_alarm_message"
-                android:layout_marginLeft="8dp" />
+                tools:text="@string/default_alarm_message" />
 
         </LinearLayout>
 
@@ -94,17 +93,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/alarm_time"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/alarm_time" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:background="@color/divider"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
 
     </android.support.constraint.ConstraintLayout>
 
