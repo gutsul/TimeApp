@@ -72,17 +72,6 @@ public class AlarmClockAdapter extends RecyclerView.Adapter<AlarmClockAdapter.Vi
         });
     }
 
-
-//    public void removeItem(int position) {
-//        alarmClocks.remove(position);
-//
-//    }
-
-    public void restoreItem(AlarmClock item, int position) {
-        alarmClocks.add(position, item);
-        notifyItemInserted(position);
-    }
-
     @Override
     public int getItemCount() {
         return alarmClocks.size();
