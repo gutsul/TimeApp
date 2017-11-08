@@ -99,7 +99,7 @@ public class AlarmClockPresenter extends BasePresenter<AlarmClockView> {
         realm.commitTransaction();
 
         if (alarm.isEnable()){
-            getView().enableAlarm(alarm);
+            enableAlarm(alarm);
         }
     }
 
