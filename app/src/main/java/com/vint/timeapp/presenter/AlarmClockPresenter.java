@@ -91,6 +91,18 @@ public class AlarmClockPresenter extends BasePresenter<AlarmClockView> {
         }
     }
 
+
+    public void changeAlarmMessage(String message, int position){
+        realm.beginTransaction();
+        AlarmClock alarm = alarmClocks.get(position);
+        alarm.setMessage(message);
+        realm.commitTransaction();
+
+        if (alarm.isEnable()){
+            getView().enableAlarm(alarm);
+        }
+    }
+
     @Override
     public void unbind() {
         super.unbind();

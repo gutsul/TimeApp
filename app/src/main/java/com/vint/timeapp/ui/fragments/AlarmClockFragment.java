@@ -1,19 +1,21 @@
 package com.vint.timeapp.ui.fragments;
 
 import android.app.TimePickerDialog;
-import android.graphics.Color;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TimePicker;
 
@@ -76,7 +78,7 @@ public class AlarmClockFragment extends BaseFragment implements AlarmClockView, 
 
     @Override
     public void initList(List<AlarmClock> alarmClocks) {
-        adapter = new AlarmClockAdapter(alarmClocks);
+        adapter = new AlarmClockAdapter(alarmClocks, getContext());
         adapter.setCallback(new AlarmClockAdapter.Callback() {
             @Override
             public void onChangeState(AlarmClock alarm) {
@@ -85,6 +87,11 @@ public class AlarmClockFragment extends BaseFragment implements AlarmClockView, 
                 } else {
                     presenter.enableAlarm(alarm);
                 }
+            }
+
+            @Override
+            public void onChangeMessage(int position) {
+                showChangeMessageDialog(position);
             }
         });
 
@@ -100,6 +107,32 @@ public class AlarmClockFragment extends BaseFragment implements AlarmClockView, 
         // add pass ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT as param
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, (RecyclerItemTouchHelper.RecyclerItemTouchHelperListener) this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(list);
+    }
+
+
+    public void showChangeMessageDialog(final int position) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.custom_dialog, null);
+        dialogBuilder.setView(dialogView);
+
+        final EditText edt = (EditText) dialogView.findViewById(R.id.edit_message);
+
+        dialogBuilder.setMessage(getString(R.string.title_message));
+        dialogBuilder.setPositiveButton(getString(R.string.action_done), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String message = edt.getText().toString();
+                presenter.changeAlarmMessage(message, position);
+                adapter.notifyDataSetChanged();
+            }
+        });
+        dialogBuilder.setNegativeButton(getString(R.string.action_cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //pass
+            }
+        });
+        AlertDialog b = dialogBuilder.create();
+        b.show();
     }
 
     @Override

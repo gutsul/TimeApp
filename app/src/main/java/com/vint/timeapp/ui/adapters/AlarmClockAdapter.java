@@ -1,11 +1,13 @@
 package com.vint.timeapp.ui.adapters;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -29,18 +31,21 @@ public class AlarmClockAdapter extends RecyclerView.Adapter<AlarmClockAdapter.Vi
 
     private List<AlarmClock> alarmClocks;
     private Callback callback;
+    private Context context;
 
 
     public interface Callback {
         void onChangeState(AlarmClock alarm);
+        void onChangeMessage(int position);
     }
 
     public void setCallback(Callback callback) {
         this.callback = callback;
     }
 
-    public AlarmClockAdapter(List<AlarmClock> alarmClocks) {
+    public AlarmClockAdapter(List<AlarmClock> alarmClocks, Context context) {
         this.alarmClocks = alarmClocks;
+        this.context = context;
     }
 
     @Override
@@ -70,6 +75,16 @@ public class AlarmClockAdapter extends RecyclerView.Adapter<AlarmClockAdapter.Vi
                 }
             }
         });
+
+
+        holder.messageLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (callback != null) {
+                    callback.onChangeMessage(position);
+                }
+            }
+        });
     }
 
     @Override
@@ -82,6 +97,9 @@ public class AlarmClockAdapter extends RecyclerView.Adapter<AlarmClockAdapter.Vi
         TextView alarmTime;
         @BindView(R.id.alarm_message)
         TextView alarmMessage;
+        @BindView(R.id.message)
+        LinearLayout messageLayout;
+
         @BindView(R.id.alarm_switch)
         Switch alarmSwitch;
 
@@ -103,9 +121,8 @@ public class AlarmClockAdapter extends RecyclerView.Adapter<AlarmClockAdapter.Vi
 
         @SuppressLint("ResourceAsColor")
         public void setAlarmMessage(String message){
-            if (message == null){
-                message = alarmMessage.getResources().getString(R.string.default_alarm_message);
-                alarmMessage.setTextColor(R.color.textSecondary);
+            if(message == null){
+                message = context.getString(R.string.title_alarm_clock);
             }
             alarmMessage.setText(message);
         }

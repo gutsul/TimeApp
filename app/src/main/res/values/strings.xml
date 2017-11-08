@@ -5,6 +5,9 @@
     <string name="title_calendar">Calendar</string>
     <string name="title_reset">RESET</string>
     <string name="title_no_alarm_clocks">No alarms</string>
-    <string name="default_alarm_message">Message</string>
-    <string name="delete">DELETE</string>
+    <string name="title_message">Message</string>
+
+    <string name="action_done">DONE</string>
+    <string name="action_cancel">CANCEL</string>
+    <string name="action_delete">DELETE</string>
 </resources>
