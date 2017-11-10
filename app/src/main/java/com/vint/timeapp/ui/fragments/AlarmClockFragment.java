@@ -118,7 +118,7 @@ public class AlarmClockFragment extends BaseFragment implements AlarmClockView, 
 
         final EditText edt = (EditText) dialogView.findViewById(R.id.edit_message);
 
-        dialogBuilder.setMessage(getString(R.string.title_message));
+        dialogBuilder.setMessage(getString(R.string.title_reminder));
         dialogBuilder.setPositiveButton(getString(R.string.action_done), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String message = edt.getText().toString();
