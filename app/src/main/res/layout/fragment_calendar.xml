@@ -49,15 +49,11 @@
                         android:textSize="16sp"
                         android:textStyle="bold"
                         tools:text="Wednesday" />
-
-
                 </LinearLayout>
-
-
             </RelativeLayout>
 
             <EditText
-                android:id="@+id/message"
+                android:id="@+id/reminder"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
@@ -72,18 +68,33 @@
                 app:layout_constraintLeft_toRightOf="@+id/day_layout"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/ic_bell"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:tint="@color/textSecondary"
-                app:layout_constraintStart_toStartOf="@+id/message"
-                app:layout_constraintTop_toBottomOf="@+id/message"
-                app:srcCompat="@drawable/ic_bell_24dp" />
 
+            <LinearLayout
+                android:id="@+id/alarm_clock_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="@+id/reminder"
+                app:layout_constraintStart_toStartOf="@+id/reminder"
+                app:layout_constraintTop_toBottomOf="@+id/reminder">
+
+                <ImageView
+                    android:id="@+id/ic_bell"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:tint="@color/textSecondary"
+                    app:srcCompat="@drawable/ic_bell_24dp" />
+
+                <TextView
+                    android:id="@+id/alarm_clock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:textSize="16sp"
+                    tools:text="06:00" />
+            </LinearLayout>
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
