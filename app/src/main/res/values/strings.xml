@@ -6,8 +6,9 @@
     <string name="title_reset">RESET</string>
     <string name="title_no_alarm_clocks">No alarms</string>
 
-    <string name="action_done">DONE</string>
-    <string name="action_cancel">CANCEL</string>
+    <string name="action_save">SAVE</string>
+    <string name="action_clean">CLEAN</string>
     <string name="action_delete">DELETE</string>
     <string name="title_reminder">Reminder</string>
+    <string name="none">None</string>
 </resources>

@@ -6,10 +6,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.text.method.KeyListener;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -19,9 +22,8 @@ import com.vint.timeapp.presenter.CalendarPresenter;
 import java.util.Calendar;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
-public class CalendarFragment extends BaseFragment implements com.vint.timeapp.view.CalendarView, CalendarView.OnDateChangeListener, TimePickerDialog.OnTimeSetListener {
+public class CalendarFragment extends BaseFragment implements com.vint.timeapp.view.CalendarView, CalendarView.OnDateChangeListener, TimePickerDialog.OnTimeSetListener , View.OnClickListener{
     @BindView(R.id.calendar)
     CalendarView vCalendar;
     @BindView(R.id.day_of_month)
@@ -32,6 +34,12 @@ public class CalendarFragment extends BaseFragment implements com.vint.timeapp.v
     TextView tvTime;
     @BindView(R.id.reminder)
     EditText etReminder;
+    @BindView(R.id.alarm_clock_layout)
+    LinearLayout llAlarmClock;
+    @BindView(R.id.save)
+    Button btnSave;
+    @BindView(R.id.clean)
+    Button btnClean;
 
     private CalendarPresenter presenter;
 
@@ -54,6 +62,8 @@ public class CalendarFragment extends BaseFragment implements com.vint.timeapp.v
         super.onViewCreated(view, savedInstanceState);
         presenter.bind(this);
         vCalendar.setOnDateChangeListener(this);
+        llAlarmClock.setOnClickListener(this);
+
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
@@ -63,12 +73,7 @@ public class CalendarFragment extends BaseFragment implements com.vint.timeapp.v
         int day = calendar.get(Calendar.DATE);
 
         presenter.onSelectedDayChange(year, month, day);
-    }
-
-    @OnClick(R.id.alarm_clock_layout)
-    void showTimePicker(){
-        DialogFragment timePicker = TimePickerFragment.newInstance(this);
-        timePicker.show(getFragmentManager(), "timePicker");
+        setTime(null);
     }
 
     @Override
@@ -82,11 +87,6 @@ public class CalendarFragment extends BaseFragment implements com.vint.timeapp.v
     }
 
     @Override
-    public void showEmptyResult() {
-
-    }
-
-    @Override
     public void setDay(String dayOfMonth, String dayOfWeek) {
         tvDayOfMonth.setText(dayOfMonth);
         tvDayOfWeek.setText(dayOfWeek);
@@ -94,23 +94,39 @@ public class CalendarFragment extends BaseFragment implements com.vint.timeapp.v
 
     @Override
     public void setTime(String time) {
+        if (time == null || time.equals("")){
+            time = getContext().getString(R.string.none);
+        }
         tvTime.setText(time);
     }
 
     @Override
     public void lock() {
-//        etReminder.setFocusable(false);
-//        etReminder.setLongClickable(false);
-//        etReminder.setCursorVisible(false);
-//        etReminder.setKeyListener(null);
+        Log.d("AlarmClock", "Locked");
+        llAlarmClock.setOnClickListener(null);
     }
 
     @Override
     public void unlock() {
-//        etReminder.setFocusable(true);
-//        etReminder.setLongClickable(true);
-//        etReminder.setCursorVisible(true);
+        Log.d("AlarmClock", "UnLocked");
+        llAlarmClock.setOnClickListener(this);
+    }
 
+    @Override
+    public void setMessage(String message) {
+        etReminder.setText(message);
+    }
+
+    @Override
+    public void showActions() {
+        btnSave.setVisibility(View.VISIBLE);
+        btnClean.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideActions() {
+        btnSave.setVisibility(View.GONE);
+        btnClean.setVisibility(View.GONE);
     }
 
     @Override
@@ -121,5 +137,11 @@ public class CalendarFragment extends BaseFragment implements com.vint.timeapp.v
     @Override
     public void cancelReminder() {
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        DialogFragment timePicker = TimePickerFragment.newInstance(this);
+        timePicker.show(getFragmentManager(), "timePicker");
     }
 }

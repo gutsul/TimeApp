@@ -45,7 +45,8 @@ public class CalendarPresenter extends BasePresenter<CalendarView> {
         if(TimeUtils.isFuture(timeInMillis)){
             getView().unlock();
         } else {
-            getView().unlock();
+            getView().lock();
+            getView().hideActions();
         }
     }
 
@@ -60,10 +61,12 @@ public class CalendarPresenter extends BasePresenter<CalendarView> {
 
         String timeIn24HourFormat = String.format("%02d:%02d", hour, minutes);
         getView().setTime(timeIn24HourFormat);
+        getView().showActions();
     }
 
     public void setMessage(String message) {
         this.message = message;
+        getView().setMessage(message);
     }
 
 

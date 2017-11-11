@@ -1,16 +1,10 @@
 package com.vint.timeapp.view;
 
-import com.vint.timeapp.models.AlarmClock;
-
-import java.util.List;
-
 /**
  * Created by ygrigortsevich on 08.03.17.
  */
 
 public interface CalendarView extends BaseView {
-
-    void showEmptyResult();
 
     void setDay(String dayOfMonth, String dayOfWeek);
 
@@ -19,6 +13,12 @@ public interface CalendarView extends BaseView {
     void lock();
 
     void unlock();
+
+    void setMessage(String message);
+
+    void showActions();
+
+    void hideActions();
 
     void saveReminder();
 

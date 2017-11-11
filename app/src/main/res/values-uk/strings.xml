@@ -6,8 +6,9 @@
     <string name="title_calendar">Календар</string>
     <string name="title_reset">СКИНУТИ</string>
     <string name="title_no_alarm_clocks">Немає будильників</string>
-    <string name="action_done">ГОТОВО</string>
-    <string name="action_cancel">НАЗАД</string>
+    <string name="action_save">ЗБЕРЕГТИ</string>
     <string name="action_delete">ВИДАЛИТИ</string>
     <string name="title_reminder">Нагадування</string>
+    <string name="none">Немає</string>
+    <string name="action_clean">ОЧИСТИТИ</string>
 </resources>
