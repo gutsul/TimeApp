@@ -69,7 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:tint="@color/textSecondary"
-                app:srcCompat="@drawable/ic_bell_24dp" />
+                app:srcCompat="@drawable/ic_message_24dp" />
 
             <TextView
                 android:id="@+id/alarm_message"
