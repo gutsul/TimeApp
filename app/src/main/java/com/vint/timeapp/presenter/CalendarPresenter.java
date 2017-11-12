@@ -61,6 +61,7 @@ public class CalendarPresenter extends BasePresenter<CalendarView> {
             calendar.set(Calendar.DATE, day);
             calendar.add(Calendar.MINUTE, 1);
             timeInMillis = calendar.getTimeInMillis();
+            message = null;
         } else {
             timeInMillis = reminder.getTime();
             time = TimeUtils.timeIn24HourFormat(timeInMillis);
@@ -101,83 +102,57 @@ public class CalendarPresenter extends BasePresenter<CalendarView> {
 
     public void setMessage(String message) {
         this.message = message;
-        getView().setMessage(message);
+        Log.d("Calendar", "Message: " + message);
     }
 
-//    public void addAlarmClock(long time, String message){
-//
-//        Number currentId = realm.where(AlarmClock.class).max("id");
-//        int nextId;
-//        if(currentId == null) {
-//            nextId = 1;
-//        } else {
-//            nextId = currentId.intValue() + 1;
-//        }
-//
-//        AlarmClock alarmClock = new AlarmClock();
-//        alarmClock.setId(nextId);
-//        alarmClock.setTime(time);
-//        alarmClock.setMessage(message);
-//        alarmClock.setEnable(true);
-//        alarmClock.setRepeat(true);
-//
-//        realm.beginTransaction();
-//        realm.copyToRealm(alarmClock);
-//        realm.commitTransaction();
-//
-//        getView().hideEmptyResult();
-//        getView().enableAlarm(alarmClock);
-//    }
-//
-//    public void enableAlarm(AlarmClock alarm){
-//        long nextTime = TimeUtils.getNextTime(alarm.getTime());
-//
-//        realm.beginTransaction();
-//        alarm.setEnable(true);
-//        alarm.setTime(nextTime);
-//        realm.commitTransaction();
-//
-//        getView().enableAlarm(alarm);
-//    }
-//
-//    public void disableAlarm(AlarmClock alarm){
-//        realm.beginTransaction();
-//        alarm.setEnable(false);
-//        realm.commitTransaction();
-//
-//        getView().dilableAlarm(alarm);
-//    }
-//
-//    public void removeAlarm(int position){
-//
-//        realm.beginTransaction();
-//
-//        AlarmClock alarm = reminder.get(position);
-//        getView().dilableAlarm(alarm);
-//
-//        alarm.deleteFromRealm();
-//
-//        realm.commitTransaction();
-//
-//        Log.d("Removed", "Size: "+ reminder.size());
-//        getView().removeAlarm(alarm, position);
-//
-//        if (reminder.isEmpty()){
-//            getView().showEmptyResult();
-//        }
-//    }
-//
-//
-//    public void changeAlarmMessage(String message, int position){
-//        realm.beginTransaction();
-//        AlarmClock alarm = reminder.get(position);
-//        alarm.setMessage(message);
-//        realm.commitTransaction();
-//
-//        if (alarm.isEnable()){
-//            enableAlarm(alarm);
-//        }
-//    }
+
+    public void save(){
+        realm.beginTransaction();
+        if (reminder == null){
+            Number currentId = realm.where(AlarmClock.class).max("id");
+            int nextId;
+            if(currentId == null) {
+                nextId = 1;
+            } else {
+                nextId = currentId.intValue() + 1;
+            }
+
+            AlarmClock alarmClock = new AlarmClock();
+            alarmClock.setId(nextId);
+            alarmClock.setTime(timeInMillis);
+            alarmClock.setMessage(message);
+            alarmClock.setEnable(true);
+            alarmClock.setRepeat(false);
+
+            realm.copyToRealm(alarmClock);
+            reminder = alarmClock;
+
+        } else {
+            reminder.setEnable(true);
+            reminder.setTime(timeInMillis);
+            reminder.setMessage(message);
+        }
+        realm.commitTransaction();
+
+        getView().hideActions();
+        getView().saveReminder(reminder);
+    }
+
+    public void clean() {
+        message = null;
+        timeInMillis = 0;
+
+        if (reminder != null){
+            getView().cancelReminder(reminder);
+            realm.beginTransaction();
+            reminder.deleteFromRealm();
+            realm.commitTransaction();
+        }
+
+        getView().hideActions();
+        getView().setMessage(message);
+        getView().setTime(null);
+    }
 
     @Override
     public void unbind() {

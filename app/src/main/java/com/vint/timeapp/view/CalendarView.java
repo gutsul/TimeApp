@@ -1,5 +1,7 @@
 package com.vint.timeapp.view;
 
+import com.vint.timeapp.models.AlarmClock;
+
 /**
  * Created by ygrigortsevich on 08.03.17.
  */
@@ -20,8 +22,8 @@ public interface CalendarView extends BaseView {
 
     void hideActions();
 
-    void saveReminder();
+    void saveReminder(AlarmClock alarm);
 
-    void cancelReminder();
+    void cancelReminder(AlarmClock alarm);
 
 }

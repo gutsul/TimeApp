@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.KeyListener;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -17,13 +19,16 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.vint.timeapp.R;
+import com.vint.timeapp.models.AlarmClock;
 import com.vint.timeapp.presenter.CalendarPresenter;
+import com.vint.timeapp.ui.receivers.AlarmClockReceiver;
 
 import java.util.Calendar;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
-public class CalendarFragment extends BaseFragment implements com.vint.timeapp.view.CalendarView, CalendarView.OnDateChangeListener, TimePickerDialog.OnTimeSetListener , View.OnClickListener{
+public class CalendarFragment extends BaseFragment implements com.vint.timeapp.view.CalendarView, CalendarView.OnDateChangeListener, TimePickerDialog.OnTimeSetListener , View.OnClickListener, TextWatcher{
     @BindView(R.id.calendar)
     CalendarView vCalendar;
     @BindView(R.id.day_of_month)
@@ -42,9 +47,11 @@ public class CalendarFragment extends BaseFragment implements com.vint.timeapp.v
     Button btnClean;
 
     private CalendarPresenter presenter;
+    private AlarmClockReceiver alarmReceiver;
 
     public CalendarFragment() {
         presenter = new CalendarPresenter();
+        alarmReceiver = new AlarmClockReceiver();
     }
 
     @Override
@@ -63,7 +70,7 @@ public class CalendarFragment extends BaseFragment implements com.vint.timeapp.v
         presenter.bind(this);
         vCalendar.setOnDateChangeListener(this);
         llAlarmClock.setOnClickListener(this);
-
+        etReminder.addTextChangedListener(this);
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
@@ -134,19 +141,44 @@ public class CalendarFragment extends BaseFragment implements com.vint.timeapp.v
         btnClean.setVisibility(View.GONE);
     }
 
-    @Override
-    public void saveReminder() {
-
+    @OnClick(R.id.save)
+    void save(){
+        presenter.save();
     }
 
     @Override
-    public void cancelReminder() {
+    public void saveReminder(AlarmClock alarm) {
+        alarmReceiver.setAlarm(getContext(), alarm);
+    }
 
+    @OnClick(R.id.clean)
+    void clean(){
+        presenter.clean();
+    }
+
+    @Override
+    public void cancelReminder(AlarmClock alarm) {
+        alarmReceiver.cancelAlarm(getContext(), alarm);
     }
 
     @Override
     public void onClick(View view) {
         DialogFragment timePicker = TimePickerFragment.newInstance(this);
         timePicker.show(getFragmentManager(), "timePicker");
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        presenter.setMessage(charSequence.toString());
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
     }
 }
