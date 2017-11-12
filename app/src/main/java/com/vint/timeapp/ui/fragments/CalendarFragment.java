@@ -116,12 +116,14 @@ public class CalendarFragment extends BaseFragment implements com.vint.timeapp.v
     public void lock() {
         Log.d("AlarmClock", "Locked");
         llAlarmClock.setOnClickListener(null);
+//        etReminder.setFocusable(false);
     }
 
     @Override
     public void unlock() {
         Log.d("AlarmClock", "UnLocked");
         llAlarmClock.setOnClickListener(this);
+//        etReminder.setFocusable(true);
     }
 
     @Override
