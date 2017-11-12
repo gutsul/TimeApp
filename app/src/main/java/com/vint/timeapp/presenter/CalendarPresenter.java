@@ -20,25 +20,56 @@ import io.realm.Realm;
 public class CalendarPresenter extends BasePresenter<CalendarView> {
 
     private long timeInMillis = 0;
-    private String message;
+    private String message = null;
 
     private Realm realm = Realm.getDefaultInstance();
     private AlarmClock reminder;
 
     public void onSelectedDayChange(int year, int month, int day){
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month);
-        calendar.set(Calendar.DATE, day);
+        Calendar calendarPrev = Calendar.getInstance();
+        calendarPrev.set(Calendar.YEAR, year);
+        calendarPrev.set(Calendar.MONTH, month);
+        calendarPrev.set(Calendar.DATE, day);
+        calendarPrev.set(Calendar.HOUR, 0);
+        calendarPrev.set(Calendar.MINUTE, 0);
+        calendarPrev.set(Calendar.SECOND, 0);
+        calendarPrev.set(Calendar.MILLISECOND, 0);
 
-//        TODO: To be a future. Refactor it
-        calendar.add(Calendar.MINUTE, 1);
+        long fromDate = calendarPrev.getTimeInMillis();
+        Log.d("Calendar", "fromDate:" + calendarPrev.getTime().toString());
 
-        timeInMillis = calendar.getTimeInMillis();
+        Calendar calendarNext = Calendar.getInstance();
+        calendarNext.setTimeInMillis(fromDate);
+        calendarNext.add(Calendar.DATE, 1);
+
+        long toDate = calendarNext.getTimeInMillis();
+        Log.d("Calendar", "toDate:" + calendarNext.getTime().toString());
+
+        reminder = realm.where(AlarmClock.class)
+                .equalTo("repeat", false)
+                .equalTo("isEnable", true)
+                .greaterThan("time", fromDate)
+                .lessThan("time", toDate)
+                .findFirst();
+
+        String time = null;
+
+        if (reminder == null){
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DATE, day);
+            calendar.add(Calendar.MINUTE, 1);
+            timeInMillis = calendar.getTimeInMillis();
+        } else {
+            timeInMillis = reminder.getTime();
+            time = TimeUtils.timeIn24HourFormat(timeInMillis);
+            message = reminder.getMessage();
+        }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE");
         String dayOfMonth = Integer.toString(day);
-        String dayOfWeek = dateFormat.format(calendar.getTime());
+        String dayOfWeek = dateFormat.format(calendarPrev.getTime());
 
         getView().setDay(dayOfMonth, dayOfWeek);
 
@@ -48,6 +79,10 @@ public class CalendarPresenter extends BasePresenter<CalendarView> {
             getView().lock();
             getView().hideActions();
         }
+
+        getView().setMessage(message);
+        getView().setTime(time);
+
     }
 
     public void onSelectedTimeChange(int hour, int minutes){
@@ -68,7 +103,6 @@ public class CalendarPresenter extends BasePresenter<CalendarView> {
         this.message = message;
         getView().setMessage(message);
     }
-
 
 //    public void addAlarmClock(long time, String message){
 //

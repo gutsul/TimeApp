@@ -73,7 +73,12 @@ public class CalendarFragment extends BaseFragment implements com.vint.timeapp.v
         int day = calendar.get(Calendar.DATE);
 
         presenter.onSelectedDayChange(year, month, day);
-        setTime(null);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        presenter.unbind();
     }
 
     @Override
