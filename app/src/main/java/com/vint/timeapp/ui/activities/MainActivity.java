@@ -6,6 +6,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -82,27 +83,18 @@ public class MainActivity extends AppCompatActivity implements MainView, BottomN
         FragmentManager fm = getSupportFragmentManager();
         int count = fm.getBackStackEntryCount();
 
-        if (count >= 1){
-            FragmentManager.BackStackEntry backEntry = fm.getBackStackEntryAt(count - 1);
-            String backName = backEntry.getName();
-            if (backName.equals(tag)) {
-                // не додавати в backStack
-                fm.beginTransaction()
-                        .replace(container, fragment, tag)
-                        .commit();
-            } else {
-                // додавати в backstack
-                fm.beginTransaction()
-                        .replace(container, fragment, tag)
-                        .addToBackStack(tag)
-                        .commit();
-            }
-        } else {
-            // add to backstack
-            fm.beginTransaction()
-                    .replace(container, fragment, tag)
-                    .addToBackStack(tag)
-                    .commit();
-        }
+        Log.d("MainActivity", "BackStack size: " + count);
+        // не додавати в backStack
+        fm.beginTransaction()
+                .replace(container, fragment, tag)
+                .commit();
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Log.d("MainActivity", "onBackPressed");
+        finish();
     }
 }
