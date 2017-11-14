@@ -103,7 +103,6 @@
                 android:layout_marginRight="8dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:text="@string/action_save"
-                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
@@ -114,7 +113,6 @@
                 android:layout_marginRight="8dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:text="@string/action_clean"
-                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/save"
                 app:layout_constraintEnd_toStartOf="@id/save" />
 

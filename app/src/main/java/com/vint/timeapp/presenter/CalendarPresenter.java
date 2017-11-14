@@ -63,6 +63,8 @@ public class CalendarPresenter extends BasePresenter<CalendarView> {
             calendar.add(Calendar.MINUTE, 1);
             timeInMillis = calendar.getTimeInMillis();
             message = null;
+            
+            getView().hideActions();
         } else {
             timeInMillis = reminder.getTime();
             time = TimeUtils.timeIn24HourFormat(timeInMillis);

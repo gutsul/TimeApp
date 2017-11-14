@@ -133,14 +133,14 @@ public class CalendarFragment extends BaseFragment implements com.vint.timeapp.v
 
     @Override
     public void showActions() {
-        btnSave.setVisibility(View.VISIBLE);
-        btnClean.setVisibility(View.VISIBLE);
+        btnSave.setEnabled(true);
+        btnClean.setEnabled(true);
     }
 
     @Override
     public void hideActions() {
-        btnSave.setVisibility(View.GONE);
-        btnClean.setVisibility(View.GONE);
+        btnSave.setEnabled(false);
+        btnClean.setEnabled(false);
     }
 
     @OnClick(R.id.save)
