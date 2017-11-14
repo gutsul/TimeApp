@@ -10,6 +10,7 @@ import com.vint.timeapp.view.CalendarView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import io.realm.Realm;
 
@@ -66,6 +67,13 @@ public class CalendarPresenter extends BasePresenter<CalendarView> {
             timeInMillis = reminder.getTime();
             time = TimeUtils.timeIn24HourFormat(timeInMillis);
             message = reminder.getMessage();
+        }
+
+        Locale locale = Locale.getDefault();
+        Log.d("Calendar", "Language: " + locale.getLanguage());
+        if (locale.getLanguage().equals("ru")){
+//            Вчіть мову :)
+            Locale.setDefault(new Locale("uk"));
         }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE");
