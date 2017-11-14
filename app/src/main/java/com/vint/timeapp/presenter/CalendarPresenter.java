@@ -21,6 +21,8 @@ import io.realm.Realm;
 public class CalendarPresenter extends BasePresenter<CalendarView> {
 
     private long timeInMillis = 0;
+//    private int year = 0, month = 0, day = 0, hour = 0, minute = 0;
+
     private String message = null;
 
     private Realm realm = Realm.getDefaultInstance();
@@ -31,7 +33,7 @@ public class CalendarPresenter extends BasePresenter<CalendarView> {
         calendarPrev.set(Calendar.YEAR, year);
         calendarPrev.set(Calendar.MONTH, month);
         calendarPrev.set(Calendar.DATE, day);
-        calendarPrev.set(Calendar.HOUR, 0);
+        calendarPrev.set(Calendar.HOUR_OF_DAY, 0);
         calendarPrev.set(Calendar.MINUTE, 0);
         calendarPrev.set(Calendar.SECOND, 0);
         calendarPrev.set(Calendar.MILLISECOND, 0);
@@ -61,14 +63,21 @@ public class CalendarPresenter extends BasePresenter<CalendarView> {
             calendar.set(Calendar.MONTH, month);
             calendar.set(Calendar.DATE, day);
             calendar.add(Calendar.MINUTE, 1);
+            Log.d("Calendar", "Reminder null Date:" + calendar.getTime().toString());
             timeInMillis = calendar.getTimeInMillis();
             message = null;
-            
+
             getView().hideActions();
         } else {
             timeInMillis = reminder.getTime();
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(timeInMillis);
+            Log.d("Calendar", "Reminder Not null Date:" + calendar.getTime().toString());
+
             time = TimeUtils.timeIn24HourFormat(timeInMillis);
             message = reminder.getMessage();
+//            getView().showActions();
         }
 
         Locale locale = Locale.getDefault();
@@ -99,10 +108,17 @@ public class CalendarPresenter extends BasePresenter<CalendarView> {
     public void onSelectedTimeChange(int hour, int minutes){
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(timeInMillis);
-        calendar.set(Calendar.HOUR, hour);
+
+        Log.d("Calendar", "onSelectedTimeChange before" + calendar.getTime().toString());
+
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minutes);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
+
+        Log.d("Calendar", "Hour: " + hour + " Minutes: " + minutes);
+        Log.d("Calendar", "onSelectedTimeChange after" + calendar.getTime().toString());
+
         timeInMillis = calendar.getTimeInMillis();
 
         String timeIn24HourFormat = String.format("%02d:%02d", hour, minutes);
@@ -113,10 +129,15 @@ public class CalendarPresenter extends BasePresenter<CalendarView> {
     public void setMessage(String message) {
         this.message = message;
         Log.d("Calendar", "Message: " + message);
+//        getView().showActions();
     }
 
 
     public void save(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timeInMillis);
+        Log.d("Calendar", "Save Date:" + calendar.getTime().toString());
+
         realm.beginTransaction();
         if (reminder == null){
             Number currentId = realm.where(AlarmClock.class).max("id");
